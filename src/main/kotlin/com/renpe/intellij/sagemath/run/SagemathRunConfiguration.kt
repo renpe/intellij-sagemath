@@ -33,22 +33,6 @@ class SagemathRunConfiguration(
         get() = opts.workingDirectory.orEmpty()
         set(value) { opts.workingDirectory = value }
 
-    var interpreterPath: String
-        get() = opts.interpreterPath.orEmpty()
-        set(value) { opts.interpreterPath = value }
-
-    var wslDistribution: String
-        get() = opts.wslDistribution.orEmpty()
-        set(value) { opts.wslDistribution = value }
-
-    var condaPath: String
-        get() = opts.condaPath.orEmpty()
-        set(value) { opts.condaPath = value }
-
-    var condaEnv: String
-        get() = opts.condaEnv.orEmpty()
-        set(value) { opts.condaEnv = value }
-
     var pythonMode: Boolean
         get() = opts.pythonMode
         set(value) { opts.pythonMode = value }

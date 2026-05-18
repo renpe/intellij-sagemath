@@ -128,17 +128,17 @@ class SagemathCommandLineState(
     private fun resolve(): ResolvedConfig {
         val s = SagemathSettings.getInstance().state
 
-        val interpreter = configuration.interpreterPath.ifBlank { s.interpreterPath }
+        val interpreter = s.interpreterPath
             .ifBlank { throw ExecutionException("SageMath interpreter not set. Open Settings → Tools → SageMath.") }
-        val wsl = configuration.wslDistribution.ifBlank { s.defaultWslDistribution }
+        val wsl = s.defaultWslDistribution
         val useWsl = SystemInfo.isWindows && wsl.isNotBlank()
 
         val extra = listOf(s.defaultExtraArgs, configuration.extraArgs)
             .filter { it.isNotBlank() }
             .joinToString(" ")
 
-        val condaEnv = configuration.condaEnv.ifBlank { s.defaultCondaEnv }
-        val condaPath = configuration.condaPath.ifBlank { s.defaultCondaPath }
+        val condaEnv = s.defaultCondaEnv
+        val condaPath = s.defaultCondaPath
             .ifBlank { if (condaEnv.isNotBlank()) deriveCondaFromSage(interpreter) else "" }
 
         return ResolvedConfig(

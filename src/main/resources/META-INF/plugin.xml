@@ -10,6 +10,11 @@
                 The new file icon is a solid blue tile, much easier to
                 spot in the project tree at 16&times;16 than the old
                 glyph.</li>
+            <li>Trimmed the run-configuration dialog: interpreter,
+                WSL distribution, conda binary and conda environment
+                are no longer duplicated per-run. They're configured
+                once under <i>Settings &rarr; Tools &rarr; SageMath</i>
+                and shared by every run configuration.</li>
         </ul>
         <h3>1.0.0</h3>
         <ul>
