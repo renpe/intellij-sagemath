@@ -100,4 +100,11 @@ The Gradle wrapper is included; you do not need to install Gradle separately.
 
 ## License
 
-Apache License 2.0 — Copyright (c) 2026 René Peschmann. See [LICENSE](LICENSE).
+Plugin source code: Apache License 2.0 — Copyright (c) 2026 René Peschmann.
+See [LICENSE](LICENSE).
+
+Bundled icons (`src/main/resources/icons/sagemath.png`,
+`sagemath@2x.png`, `META-INF/pluginIcon.svg`) are derived from the
+official SageMath organisation avatar — © the SageMath project,
+[CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/). See
+[NOTICE](NOTICE) for full attribution.

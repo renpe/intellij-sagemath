@@ -1,0 +1,36 @@
+intellij-sagemath
+Copyright 2026 René Peschmann
+
+This product includes software developed by René Peschmann, distributed
+under the Apache License, Version 2.0. See LICENSE.
+
+Third-party artwork
+-------------------
+
+The plugin and file-type icons are derived from the official SageMath
+organisation avatar / logo (an icosahedron design), located at:
+
+    https://github.com/sagemath/artwork/blob/master/sage-logo-2018.svg
+    https://avatars.githubusercontent.com/u/982721
+
+The SageMath artwork is © the SageMath project and is licensed under the
+Creative Commons Attribution-ShareAlike 4.0 International License
+(CC-BY-SA-4.0):
+
+    https://creativecommons.org/licenses/by-sa/4.0/
+
+The plugin redistributes the artwork in modified form (a rounded-corner
+clip applied to the original PNG, and embedded into an SVG wrapper) under
+the same CC-BY-SA-4.0 terms. Files affected:
+
+    src/main/resources/icons/sagemath.png
+    src/main/resources/icons/sagemath@2x.png
+    src/main/resources/META-INF/pluginIcon.svg
+
+Use, modification and redistribution of these icon files must keep the
+CC-BY-SA-4.0 license intact and provide attribution to the SageMath
+project. All other source code in this repository remains licensed under
+Apache 2.0 and is unaffected by the icon licensing.
+
+The plugin itself is not affiliated with, endorsed by, or developed by
+the SageMath project.

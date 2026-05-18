@@ -5,7 +5,10 @@ import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
 
 object SagemathIcons {
-    val FILE: Icon = IconLoader.getIcon("/icons/sagemath.svg", SagemathIcons::class.java)
+    // PNG, not SVG: the file icon is the official SageMath icosahedron
+    // avatar (https://github.com/sagemath/) with a rounded-corner clip.
+    // IntelliJ picks up @2x.png automatically for HiDPI displays.
+    val FILE: Icon = IconLoader.getIcon("/icons/sagemath.png", SagemathIcons::class.java)
 }
 
 object SagemathFileType : LanguageFileType(SagemathLanguage) {

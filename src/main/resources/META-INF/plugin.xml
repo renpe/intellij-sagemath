@@ -3,6 +3,14 @@
     <name>SageMath</name>
     <vendor email="" url="https://github.com/renpe/intellij-sagemath">René Peschmann</vendor>
     <change-notes><![CDATA[
+        <h3>1.1.0</h3>
+        <ul>
+            <li>Replaced the placeholder &sigma; icon with the official
+                SageMath icosahedron logo (CC-BY-SA-4.0, see NOTICE).
+                The new file icon is a solid blue tile, much easier to
+                spot in the project tree at 16&times;16 than the old
+                glyph.</li>
+        </ul>
         <h3>1.0.0</h3>
         <ul>
             <li>Initial release.</li>
