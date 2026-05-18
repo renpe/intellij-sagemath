@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write   # required to create GitHub Releases
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    env:
+      # Exposed at job level so the conditional in the Marketplace step
+      # can see whether the secret is configured. The Gradle task itself
+      # also picks this up automatically.
+      PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Derive version from tag
+        id: version
+        run: |
+          # Strip leading 'v' so the tag v1.1.0 maps to pluginVersion 1.1.0.
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Sanity-check tag matches gradle.properties
+        run: |
+          PROP_VERSION=$(grep '^pluginVersion' gradle.properties | sed 's/.*= *//')
+          if [ "$PROP_VERSION" != "${{ steps.version.outputs.version }}" ]; then
+            echo "Tag (${{ steps.version.outputs.version }}) does not match gradle.properties pluginVersion ($PROP_VERSION)" >&2
+            exit 1
+          fi
+
+      - name: Build plugin
+        run: ./gradlew --no-daemon clean buildPlugin
+
+      - name: Verify plugin against target IDEs
+        run: ./gradlew --no-daemon verifyPlugin
+        continue-on-error: true   # don't block a release on advisory verifier warnings
+
+      - name: Extract change notes for this version
+        id: notes
+        run: |
+          # Pull the <h3>X.Y.Z</h3> ... block from plugin.xml's <change-notes>.
+          python3 - <<'PY' > release-notes.md
+          import re, pathlib, sys, html
+          xml = pathlib.Path('src/main/resources/META-INF/plugin.xml').read_text()
+          m = re.search(r'<change-notes>\s*<!\[CDATA\[(.+?)\]\]>\s*</change-notes>', xml, re.DOTALL)
+          if not m:
+              sys.stderr.write('No change-notes block found\n'); sys.exit(0)
+          body = m.group(1)
+          version = "${{ steps.version.outputs.version }}"
+          chunks = re.split(r'<h3>([^<]+)</h3>', body)
+          for i in range(1, len(chunks), 2):
+              if chunks[i].strip() == version:
+                  print(chunks[i+1].strip())
+                  break
+          PY
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          files: build/distributions/*.zip
+          fail_on_unmatched_files: true
+
+      - name: Publish to JetBrains Marketplace
+        if: env.PUBLISH_TOKEN != ''
+        run: ./gradlew --no-daemon publishPlugin

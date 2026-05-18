@@ -1,0 +1,84 @@
+<idea-plugin>
+    <id>com.renpe.sagemath</id>
+    <name>SageMath</name>
+    <vendor email="" url="https://github.com/renpe/intellij-sagemath">René Peschmann</vendor>
+    <change-notes><![CDATA[
+        <h3>1.0.0</h3>
+        <ul>
+            <li>Initial release.</li>
+            <li>Syntax highlighting for <code>.sage</code>, <code>.sagews</code>,
+                <code>.spyx</code> files (Python superset plus Sage preparser
+                constructs: <code>R.&lt;x&gt;</code> generators, <code>^</code> as
+                power, Sage REPL magics).</li>
+            <li>Brace matching and line/block comment support.</li>
+            <li>Live templates for common Sage constructs
+                (<code>def</code>, <code>class</code>, polynomial ring,
+                number field, finite field, elliptic curve, plot, …).</li>
+            <li>Color settings page.</li>
+            <li>Run configurations for Sage scripts, with native and WSL execution,
+                <code>--python</code> and <code>--preparse</code> modes.</li>
+            <li>Global SageMath settings under <i>Settings &rarr; Tools &rarr; SageMath</i>.</li>
+        </ul>
+    ]]></change-notes>
+
+    <description><![CDATA[
+        Language support for the <a href="https://www.sagemath.org/">SageMath</a>
+        computer algebra system in IntelliJ-based IDEs.<br>
+        <ul>
+            <li>Syntax highlighting for <code>.sage</code>, <code>.sagews</code> and <code>.spyx</code> files</li>
+            <li>Brace matching and line/triple-quoted comment support</li>
+            <li>Live templates for common Sage constructs (polynomial ring, number field, elliptic curve, plot, …)</li>
+            <li>Run configurations for Sage scripts, with native and WSL execution</li>
+            <li>Thousands of recognised Sage built-ins and category names — regenerable from your local Sage install</li>
+        </ul>
+        <p><b>Disclaimer:</b> This is an unofficial, community-maintained plugin and is
+        <b>not affiliated with, endorsed by, or developed by</b> the SageMath project.
+        <i>SageMath</i> is a trademark of its respective owners.</p>
+        Licensed under the Apache License 2.0.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- File type -->
+        <fileType
+            name="SageMath"
+            implementationClass="com.renpe.intellij.sagemath.lang.SagemathFileType"
+            fieldName="INSTANCE"
+            language="SageMath"
+            extensions="sage;sagews;spyx;spx"/>
+
+        <!-- Syntax highlighting -->
+        <lang.syntaxHighlighterFactory
+            language="SageMath"
+            implementationClass="com.renpe.intellij.sagemath.highlight.SagemathSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.renpe.intellij.sagemath.highlight.SagemathColorSettingsPage"/>
+
+        <!-- Commenter -->
+        <lang.commenter language="SageMath" implementationClass="com.renpe.intellij.sagemath.lang.SagemathCommenter"/>
+
+        <!-- Brace matching -->
+        <lang.braceMatcher language="SageMath" implementationClass="com.renpe.intellij.sagemath.brace.SagemathBraceMatcher"/>
+
+        <!-- Live templates -->
+        <defaultLiveTemplates file="liveTemplates/Sagemath.xml"/>
+        <liveTemplateContext
+            contextId="SAGEMATH_CODE"
+            implementation="com.renpe.intellij.sagemath.template.SagemathTemplateContextType"/>
+
+        <!-- Run configuration -->
+        <configurationType implementation="com.renpe.intellij.sagemath.run.SagemathRunConfigurationType"/>
+        <runConfigurationProducer implementation="com.renpe.intellij.sagemath.run.SagemathRunConfigurationProducer"/>
+        <runLineMarkerContributor
+            language="SageMath"
+            implementationClass="com.renpe.intellij.sagemath.run.SagemathRunLineMarkerContributor"/>
+
+        <!-- Global settings -->
+        <applicationService serviceImplementation="com.renpe.intellij.sagemath.settings.SagemathSettings"/>
+        <applicationConfigurable
+            parentId="tools"
+            id="com.renpe.intellij.sagemath.settings.SagemathSettingsConfigurable"
+            displayName="SageMath"
+            instance="com.renpe.intellij.sagemath.settings.SagemathSettingsConfigurable"/>
+    </extensions>
+</idea-plugin>
